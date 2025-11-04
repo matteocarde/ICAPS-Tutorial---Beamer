@@ -1,0 +1,122 @@
+%!TeX program = xelatex
+
+\documentclass[10pt,american,aspectratio=169,xcolor=table]{beamer}
+
+% Languages and fonts
+\usepackage[utf8]{inputenc}
+\usepackage[T2A,T1]{fontenc}
+
+\usepackage{amsmath,amssymb}
+\usepackage{mathtools}
+\usepackage[all]{foreign}
+
+\usepackage[
+  style=numeric, maxcitenames=99, maxbibnames=99, 
+  bibencoding=utf8, language=auto, autolang=other,
+  sorting=none
+]{biblatex}
+
+\usetheme{formally}
+
+\addbibresource{biblio.bib}
+
+\title{%
+  An introduction to\\
+  Planning as Satisfiability
+}
+
+\IfFileExists{config.cfg}{\input{config.cfg}}
+
+\author{%
+  \texorpdfstring{%
+    \begingroup
+      \renewcommand\author[1]{{\small ##1}}%
+      \newcommand\speaker[1]{{\small\alert{##1}}}%
+      \newcommand\affil[1]{{\scriptsize ##1}}%
+      \begin{tabular}{@{} c c c c @{}}
+        \speaker{Gregor Behnke} & 
+        \author{Matteo Cardellini} & 
+        \author{Nicola Gigante} & 
+        \author{Andrea Micheli}\\
+        \affil{University of Amsterdam} & 
+        \affil{University of Genoa }& 
+        \affil{Free University of Bozen-Bolzano }& 
+        \affil{Fondazione Bruno Kessler}\\
+        \affil{The Netherlands }& 
+        \affil{Italy }& 
+        \affil{Italy }& 
+        \affil{Trento, Italy}
+      \end{tabular}% 
+    \endgroup
+  }{%
+    Nicola Gigante
+  }%
+}
+
+\date{%
+  ICAPS 2025\\
+  November 10\\
+  Melbourne, Australia
+}
+
+\begin{document}
+
+\begin{frame}[label=title]
+  \maketitle  
+\end{frame}
+
+\begin{frame}{Example title}
+  \framesubtitle{Example subtitle}
+
+  Some important points:
+  \begin{enumerate}
+    \item one
+    \item two
+    \item three
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Two columns}
+  \begin{columns}
+    \column{0.5\textwidth}
+    Using two columns is a good idea on widescreen slides:
+    \begin{enumerate}
+      \item first reason
+      \item second reason
+      \item third reason~\cite{bartolucci2025phasebehaviorcacioe}
+    \end{enumerate}
+
+    \column{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \path node[circle,white,fill=primary] { Fourth reason };
+    \end{tikzpicture}
+  \end{columns}
+\end{frame}
+
+\section{Example section divider}
+
+\begin{frame}{Conclusions}
+  
+  \begin{columns}
+    \column{0.5\textwidth}
+    We did a lot of things:
+    \begin{itemize}
+      \item the front page
+      \item the first slide
+      \item the second slide
+      \item the conclusion
+    \end{itemize}
+
+    \column{0.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/conclusions.jpg}
+  \end{columns}
+
+\end{frame}
+
+\begin{frame}[allowframebreaks]{References}
+  \printbibliography[heading=none]
+\end{frame}
+
+\end{document}

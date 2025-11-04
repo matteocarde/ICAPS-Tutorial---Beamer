@@ -1,0 +1,276 @@
+%!TeX root = spin25-slides.tex
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerthemeformally}[2020/01/22 OVERLAY beamer theme]
+
+\ProcessOptions*
+
+\mode<presentation>
+
+% Packages
+\RequirePackage{xparse}
+\RequirePackage{ifthen}
+\RequirePackage{varwidth}
+\RequirePackage{textcase}
+\RequirePackage{environ}
+
+\RequirePackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{external}
+
+\RequirePackage[defaultfam,tabular,lining]{montserrat}
+
+%
+% Colors
+%
+\definecolor{overlay}{HTML}{004E98}
+\definecolor{orange}{HTML}{FF6600}
+\definecolor{orangebg}{HTML}{FFD500}
+\definecolor{sky}{HTML}{009FB7}
+\definecolor{skybg}{HTML}{B3D9FF}
+\definecolor{auburn}{HTML}{A12323}
+\definecolor{mikado}{HTML}{FFC914}
+\definecolor{friuli}{HTML}{136798}
+\definecolor{friulibg}{HTML}{D9EDF7}
+\definecolor{olive}{HTML}{688E26}
+\definecolor{scarlet}{HTML}{550527}
+\definecolor{tangerine}{HTML}{FAA613}
+\definecolor{topaz}{HTML}{FFCC7A}
+\definecolor{flame}{HTML}{E4572E}
+
+\colorlet{formally}{auburn}
+
+\colorlet{primary}{auburn}
+\colorlet{secondary}{overlay}
+
+\colorlet{primarybg}{white}
+\colorlet{secondarybg}{overlay!50}
+\colorlet{alerted}{secondary}
+
+\setbeamercolor{primary}{fg=primary, bg=primarybg}
+\setbeamercolor{secondary}{fg=secondary, bg=secondarybg}
+
+\setbeamercolor{frametitle}{fg=primary}
+\setbeamercolor{alerted text}{fg=primary}
+\setbeamercolor{structure}{fg=primary}
+\setbeamercolor{palette primary}{parent=structure}
+\setbeamercolor{block title}{fg=white, bg=primary}
+\setbeamercolor{block body}{fg=black, bg=primarybg}
+
+\setbeamercolor{block title alerted}{fg=white, bg=secondary}
+\setbeamercolor{block body alerted}{fg=black, bg=white}
+\setbeamerfont{block title alerted}{series=\bfseries}
+\setbeamerfont{block body alerted}{
+  series=\normalfont\setbeamercolor{alerted text}{fg=secondary}
+}
+
+%
+% Fonts
+%
+\RequirePackage{calc}
+\RequirePackage{graphicx}
+
+% Undefine commands that are defined by `arevmath' later
+\RequirePackage{eulervm}
+\usefonttheme{metropolis}
+
+\newif\ifblocktitle
+\blocktitlefalse
+
+\setbeamerfont{frametitle}{series=\fontseries{regular}\selectfont, size=\large}
+\setbeamerfont{framesubtitle}{size=\normalsize}
+\setbeamerfont{title}{series=\bfseries, size=\Large}
+\setbeamerfont{author}{series=\mdseries, size=\small}
+\setbeamerfont{date}{series=\mdseries, size=\small}
+\setbeamerfont{alerted text}{series=\ifmmode\else\fontseries{medium}\selectfont\fi}
+\setbeamerfont{block title}{series=\bfseries, size=\normalsize\blocktitletrue}
+\setbeamerfont{section page}{series=\bfseries, size=\Large}
+
+% Disable hyphenation
+\RequirePackage{ragged2e}
+
+\RaggedRight
+\hyphenchar\font=-1%
+
+%
+% Title page
+%
+\defbeamertemplate{title page}{overlay}
+{%
+  \tikzset{external/export next=false}%
+  \begin{tikzpicture}[overlay, remember picture]
+    \path (current page.south) node[above, inner sep=0] {
+      \includegraphics[width=\the\paperwidth]{images/melbourne.pdf}%
+    };
+    
+    \path (current page.north) ++(0, 0)
+      node[
+        inner ysep=0.75cm, anchor=north, align=center,
+        text width=\the\paperwidth, font=\usebeamerfont{title},
+        primary
+      ]
+      (title) {%
+        \MakeTextUppercase{\inserttitle}\strut%
+      };
+
+    \path (title.south) ++(0,5mm)
+      node[
+          anchor=north, align=right, %text width=\the\paperwidth,
+          inner xsep=1cm, inner ysep=2.5mm, font=\usebeamerfont{author}
+      ] (author) {%
+        \insertauthor
+      };
+
+    \path (current page.east) ++(0,-2cm)
+    node[
+        anchor=east, align=right, text width=\the\paperwidth-2cm,
+        inner sep=2.5mm, font=\usebeamerfont{author}
+    ] (author) {%
+      \insertdate
+    };
+  \end{tikzpicture}
+}
+
+\setbeamertemplate{title page}[overlay]
+
+%
+% Background
+%
+\setbeamertemplate{background}{%
+  \ifnum\insertframenumber>1\relax
+    \usebeamercolor[fg]{normal text}%
+    \tikzset{external/export next=false}%
+    \begin{tikzpicture}
+      \fill[white] (0,0) rectangle (\the\paperwidth,\the\paperheight);
+
+      \path (current page.south east) ++(-1em,1em)
+        node[font=\footnotesize, inner sep=0pt, anchor=base east]
+        {\insertframenumber};
+    \end{tikzpicture}%
+  \fi
+}
+
+%
+% Frame title
+%
+\defbeamertemplate*{frametitle}{overlay}
+{%
+  \usebeamercolor{frametitle}%
+  \usebeamerfont{frametitle}%
+  \hspace*{-3em}%
+  \tikzset{external/export next=false}%
+  \begin{tikzpicture}
+    
+    \path
+      node[anchor=north west, primary, align=left, 
+      text width=\the\paperwidth, inner xsep=2em,
+      minimum height=1.2cm]
+      (title) {\strut\insertframetitle};
+
+    \draw[very thick] (title.south east) -- (title.south west);
+
+    \ifx\insertframesubtitle\@empty\relax\else
+      \path (title.south west) ++(1.65em,0)
+        node[anchor=north west, align=left, font=\usebeamerfont{framesubtitle}] 
+          {\strut\insertframesubtitle};
+    \fi
+  \end{tikzpicture}%
+}
+
+% \NewDocumentEnvironment{highlight}{}{
+%   \begin{beamercolorbox}[colsep*=0.75ex, wd=\textwidth]{block body}
+% }{\end{beamercolorbox}}
+
+\NewEnviron{highlight}[1][]{
+  \par
+  \vskip1ex%
+  \tikzset{external/export next=false}%
+  \begin{tikzpicture}
+    \path node[
+      text width=\textwidth-1em, draw=primary, line width=1pt, 
+      fill=white, inner sep=0.5em, #1
+    ] {\BODY};
+  \end{tikzpicture}
+}
+
+% Section pages
+
+% \defbeamertemplate*{section page}{overlay}{
+%   \begin{tikzpicture}[overlay]
+%     \path (current page.center) 
+%       node %[anchor=center,minimum width=\the\paperwidth, white, fill=primary]
+%         {\insertsection};
+%   \end{tikzpicture}
+% }
+
+\def\sectionlogo{}
+\NewDocumentCommand\fulltitleframe{sm}{
+  \begin{frame}[plain]
+    \centering
+    \hspace*{-1cm}%
+    \tikzset{external/export next=false}%
+    \begin{tikzpicture}[overlay, remember picture]
+      \IfBooleanTF{#1}{
+        \path (current page.center) node [
+          minimum width=\the\paperwidth,
+          minimum height=\the\paperheight,
+          primary, align=center, font=\usebeamerfont{section page}
+        ] (main) {#2};
+      }{
+        \path (current page.center) node [
+          minimum width=\the\paperwidth,
+          minimum height=\the\paperheight, 
+          white, fill=primary,
+          text width=\the\paperwidth,
+        ] {};
+
+        \path (current page.center) node[
+          white, font=\usebeamerfont{section page}
+        ] {#2};
+      }
+
+      \sectionlogo
+    \end{tikzpicture}
+  \end{frame}
+}
+
+\AtBeginSection{
+  \fulltitleframe{%
+    \MakeTextUppercase{\insertsectionhead}%
+  }
+}
+
+\AtBeginSubsection{
+  \fulltitleframe*{\MakeTextUppercase{\insertsubsectionhead}}
+}
+
+% \AtBeginSection{
+%   \begin{frame}[plain]
+%     \begin{tikzpicture}[overlay, remember picture]
+%       \path (current page.north)
+%         node[anchor=north, inner sep=0pt] (logo)
+%           {\includegraphics[width=\the\paperwidth]{images/clock.png}};
+
+%       \path (logo.south)
+%         node[
+%           inner sep=0pt, anchor=south, align=left, yshift=-1mm,
+%           text width=\the\paperwidth-2cm, font=\usebeamerfont{title}
+%         ]
+%         (title) {\insertsectionhead};
+%     \end{tikzpicture}
+%   \end{frame}
+% }
+
+% Misc layout elements
+%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{items}[square]
+\setbeamertemplate{sections/subsections in toc}[square]
+
+\setbeamertemplate{bibliography item}[text]
+
+\newcommand\continueframe[1]{~\textsubscript{(#1)}}
+
+\setbeamertemplate{frametitle continuation}[from second]
+  [\continueframe{\insertcontinuationcount}]
+
+\mode<all>
